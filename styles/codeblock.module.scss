@@ -1,0 +1,99 @@
+@import "./variables.scss";
+
+.textContent {
+    font-family: 'JetBrains Mono Variable', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+.dot {
+    width: 0.7rem;
+    height: 0.7rem;
+    background-color: #c4c4c4;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 4px;
+}
+
+@media screen and (min-width: 550px) {
+    .textContent {
+        font-size: 1rem;
+    }
+}
+  
+@media screen and (min-width: 670px) {
+    .textContent {
+        font-size: 1rem;
+    }
+    .dot {
+        width: 0.75rem;
+        height: 0.75rem;
+    }
+}
+
+@media screen and (min-width: 800px) {
+    .textContent {
+        font-size: 1.9vw;
+    }
+
+}
+
+// @media screen and (min-width: 1440px) {
+//     .textContent {
+//         font-size: 1.8vw;
+//     }
+// }
+
+// Colors for action buttons on top of window
+
+
+.relative {
+    position: relative;
+}
+
+.redDot {
+    background-color: $redDot;
+}
+
+.yellowDot {
+    background-color: $yellowDot;
+}
+
+.greenDot {
+    background-color: $greenDot;
+}
+// Colors for letters
+.let {
+    color: $letColor;
+}
+.melih  {
+    color: $melihColor;   
+}
+.equal  {
+    color: $equalColor;
+}
+.bracket{
+    color: $bracketColor;
+}
+.comma {
+    color: $commaColor;
+}
+.semi_colon {
+    color: $semicolonColor;
+}
+.colon  {
+    color: $colonColor;
+}
+.properties {
+    color: 	$propertiesColor;
+    font-style: italic;
+}
+.integer {
+    color: 	$integerColor;
+}
+.string {
+    color: $stringColor;  
+}
+.line {
+    color: $lineColor;
+}

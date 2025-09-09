@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* .t {
+    @apply border-2 border-gray-500 rounded-lg sm:border-black active:bg-gray-700 hover:sm:border-gray-500;
+} */
+
+@import '@fontsource-variable/jetbrains-mono';
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

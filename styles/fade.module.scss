@@ -1,0 +1,39 @@
+.fadeAway {
+    animation: fadeOut 7s forwards;
+    /* Adjust duration as needed */
+}
+
+.fadeToLow {
+    background: linear-gradient(to left, transparent 0%, black 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.font {
+    font-family: 'JetBrains Mono Variable', monospace;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+@media screen and (min-width: 550px) {
+    .font {
+        font-size: 0.9rem;
+    }
+}
+
+@media screen and (min-width: 800px) {
+    .font {
+        font-size: 1.1rem;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
