@@ -14,13 +14,9 @@ export default function NavBar() {
   }, []);
 
   useEffect(() => {
-    // Update height on component mount and window resize
     updateNavbarHeight();
     window.addEventListener('resize', updateNavbarHeight);
-
-    return () => {
-      window.removeEventListener('resize', updateNavbarHeight);
-    };
+    return () => window.removeEventListener('resize', updateNavbarHeight);
   }, [updateNavbarHeight]);
 
   const handleScroll = (id: string) => {
@@ -28,47 +24,54 @@ export default function NavBar() {
     if (element) {
       const elementRect = element.getBoundingClientRect().top + window.scrollY;
       const offsetPosition = elementRect - navbarHeight;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-
-      setIsOpen(false); // Close mobile menu if applicable
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+      setIsOpen(false);
     }
   };
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
-  const linkStyle = "cursor-pointer p-2 border border-gray-800 rounded-lg hover:border-gray-500";
-  const hamburgerStyle = "text-white border p-1 border-white rounded-lg hover:border-gray-500";
+  const linkStyle =
+    'cursor-pointer p-2 border border-gray-800 rounded-lg hover:border-gray-500';
+  const hamburgerStyle =
+    'text-white border p-1 border-white rounded-lg hover:border-gray-500';
 
   return (
     <nav className="bg-gray-800 p-4 fixed w-full top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
         <div className="text-white italic font-bold">
-          <a onClick={() => window.location.href = window.location.href.split('#')[0]} className={linkStyle}>
+          <a
+            onClick={() => (window.location.href = window.location.href.split('#')[0])}
+            className={linkStyle}
+          >
             Kemtech.be
           </a>
         </div>
 
         <div className="lg:hidden">
-          <button onClick={toggleMenu} className={hamburgerStyle}>
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <button onClick={toggleMenu} className={hamburgerStyle} aria-label="Open menu">
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
             </svg>
           </button>
         </div>
 
-        <div className="hidden lg:flex space-x-6 text-white">
+        <div className="hidden lg:flex space-x-3 text-white">
           <a onClick={() => handleScroll('electricity')} className={linkStyle}>
-            Elektriciteitswerk
+            Elektriciteitswerken
           </a>
-          <a onClick={() => handleScroll('solar-panels')} className={linkStyle}>
-            Zonnepanelen
+          <a onClick={() => handleScroll('airco')} className={linkStyle}>
+            Airco (lucht-lucht)
           </a>
-          <a onClick={() => handleScroll('aircos')} className={linkStyle}>
-            Airco's
+          <a onClick={() => handleScroll('ventilation')} className={linkStyle}>
+            Ventilatie
           </a>
           <a onClick={() => handleScroll('charging-stations')} className={linkStyle}>
             Laadpalen
@@ -77,7 +80,7 @@ export default function NavBar() {
             Contact
           </a>
           <a onClick={() => handleScroll('quote')} className={linkStyle}>
-            Maak een Offerte
+            Offerte
           </a>
         </div>
       </div>
@@ -86,13 +89,13 @@ export default function NavBar() {
       {isOpen && (
         <div className="lg:hidden bg-gray-800 text-white flex flex-col items-center space-y-4 mt-4 border-t border-gray-500 p-2">
           <a onClick={() => handleScroll('electricity')} className={linkStyle}>
-            Elektriciteitswerk
+            Elektriciteitswerken
           </a>
-          <a onClick={() => handleScroll('solar-panels')} className={linkStyle}>
-            Zonnepanelen
+          <a onClick={() => handleScroll('airco')} className={linkStyle}>
+            Airco (lucht-lucht)
           </a>
-          <a onClick={() => handleScroll('aircos')} className={linkStyle}>
-            Airco's
+          <a onClick={() => handleScroll('ventilation')} className={linkStyle}>
+            Ventilatie
           </a>
           <a onClick={() => handleScroll('charging-stations')} className={linkStyle}>
             Laadpalen
@@ -101,7 +104,7 @@ export default function NavBar() {
             Contact
           </a>
           <a onClick={() => handleScroll('quote')} className={linkStyle}>
-            Maak een Offerte
+            Offerte
           </a>
         </div>
       )}
