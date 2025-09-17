@@ -30,8 +30,11 @@ export default function Home() {
       {/* Hero */}
       <header className="pt-28 pb-16 bg-gray-900 text-white">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-5xl font-extrabold">
+          {/* <h1 className="text-3xl md:text-5xl font-extrabold">
             Elektriciteit • Airco • Ventilatie • Laadpalen
+          </h1> */}
+          <h1 className="text-3xl md:text-5xl font-extrabold italic">
+            DAHA DUZELTICEM
           </h1>
           <p className="mt-4 text-lg opacity-90">
             Professionele installatie en service – overal in België.

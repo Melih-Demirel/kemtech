@@ -2,9 +2,7 @@ import React from "react";
 import { FaInstagram, FaGithub, FaLinkedin } from "react-icons/fa";
 
 const socialLinks = {
-  instagram: "https://www.instagram.com/melihdemire1",
-  github: "https://github.com/Melih-Demirel",
-  linkedin: "https://www.linkedin.com/in/melih-demirel-0009aa208/"
+  instagram: "https://www.instagram.com/kemtech.be",
 };
 
 const baseDiv = "border-2 border-gray-500 rounded-lg sm:border-black active:bg-gray-700 hover:sm:border-gray-500"
@@ -24,7 +22,7 @@ export const Socials = () => {
           <FaInstagram className="text-3xl" />
         </a>
       </div>
-      <div
+      {/* <div
         className={baseDiv}
       >
         <a
@@ -47,7 +45,7 @@ export const Socials = () => {
         >
           <FaLinkedin className="text-3xl" />
         </a>
-      </div>
+      </div> */}
     </div>
   );
 };
