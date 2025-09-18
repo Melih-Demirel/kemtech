@@ -20,3 +20,28 @@ body {
     text-wrap: balance;
   }
 }
+
+
+/* Base logo coloring (defaults) */
+.kemtech-logo {
+  --symbol: #FA8911;
+  --letters: #ffffff;
+}
+
+/* Bind variables to the correct parts */
+.kemtech-logo .symbol {
+  fill: var(--symbol);
+}
+
+.kemtech-logo .letters {
+  fill: var(--letters);
+}
+
+/* Smooth color transitions + a tiny hover polish */
+.kemtech-logo path {
+  transition: fill 200ms ease;
+}
+
+.kemtech-logo:hover .symbol {
+  filter: brightness(1.05);
+}
