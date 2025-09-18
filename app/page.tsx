@@ -5,7 +5,7 @@ import { Footer } from "@/components/Footer";
 import { ContactForm } from "@/components/ContactForm";
 
 export const metadata = {
-  title: "Kemtech",
+  title: "Home | Kemtech.be",
 };
 
 export default function Home() {
@@ -28,7 +28,7 @@ export default function Home() {
       <NavBar />
 
       {/* Hero */}
-      <header className="pt-28 pb-16 bg-gray-900 text-white">
+      <header className="pt-32 pb-16 bg-gray-900 text-white">
         <div className="container mx-auto px-4 text-center">
           {/* <h1 className="text-3xl md:text-5xl font-extrabold">
             Elektriciteit • Airco • Ventilatie • Laadpalen

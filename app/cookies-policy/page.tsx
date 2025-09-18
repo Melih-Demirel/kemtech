@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import NavBar from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Cookie Policy | Kemtech",
@@ -11,16 +12,16 @@ export const metadata: Metadata = {
 
 export default function CookiesPage() {
   const currentYear = new Date().getFullYear();
-
   return (
     <>
       <NavBar />
-
       {/* Hero */}
-      <header className="pt-28 pb-10 bg-gray-900 text-white">
+      <header className="pt-32 pb-10 bg-gray-900 text-white">
         <div className="container mx-auto px-4">
           <nav className="text-sm opacity-80 mb-2">
-            <a href="/" className="hover:text-orange-400 italic">Home</a>
+            <Link href="/" className="hover:text-orange-400 italic">
+              Home
+            </Link>
             <span className="mx-2">/</span>
             <span className="italic">Cookie Policy</span>
           </nav>

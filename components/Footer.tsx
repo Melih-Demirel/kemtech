@@ -4,14 +4,14 @@ export const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="flex flex-col items-center bg-gray-900 text-white border-t border-gray-700">
+    <footer className="flex flex-col items-center bg-black text-white border-t border-gray-700">
       <p className="font-mono text-xs md:text-base text-center px-4 pt-6 pb-6 leading-relaxed">
         © {currentYear} Kemtech
         &nbsp;|&nbsp; BE 1026.389.563
         &nbsp;|&nbsp;
-        <a href="/privacy" className="hover:text-orange-400">Privacy</a>
+        <a href="/privacy-policy" className="hover:text-orange-400">Privacy</a>
         &nbsp;|&nbsp;
-        <a href="/cookies" className="hover:text-orange-400">Cookies</a>
+        <a href="/cookies-policy" className="hover:text-orange-400">Cookies</a>
         &nbsp;|&nbsp;
         <a
           href="https://www.linkedin.com/in/melih-demirel-0009aa208/"

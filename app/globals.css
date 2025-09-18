@@ -24,7 +24,7 @@ body {
 
 /* Base logo coloring (defaults) */
 .kemtech-logo {
-  --symbol: #FA8911;
+  --symbol: #ff850d;
   --letters: #ffffff;
 }
 
@@ -42,6 +42,6 @@ body {
   transition: fill 200ms ease;
 }
 
-.kemtech-logo:hover .symbol {
-  filter: brightness(1.05);
+.kemtech-logo:hover .symbol .letters {
+  filter: brightness(1.1);
 }

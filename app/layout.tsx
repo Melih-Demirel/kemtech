@@ -4,6 +4,12 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
+export const metadata: Metadata = {
+  icons: [
+    { rel: "icon", url: "/tab_logo_new.svg", type: "image/svg+xml" },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{

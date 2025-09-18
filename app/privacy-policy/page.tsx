@@ -17,7 +17,7 @@ export default function PrivacyPage() {
       <NavBar />
 
       {/* Hero */}
-      <header className="pt-28 pb-10 bg-gray-900 text-white">
+      <header className="pt-32 pb-10 bg-gray-900 text-white">
         <div className="container mx-auto px-4">
           <nav className="text-sm opacity-80 mb-2">
             <a href="/" className="hover:text-orange-400 italic">Home</a>
