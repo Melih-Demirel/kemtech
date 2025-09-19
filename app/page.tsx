@@ -2,8 +2,9 @@ import Head from "next/head";
 import NavBar from "@/components/Navbar";
 import { Socials } from "@/components/Socials";
 import { Footer } from "@/components/Footer";
-import { ContactForm } from "@/components/ContactForm";
-
+import { ContactForm } from "@/components/FormContact";
+import { ContactQuoteSection } from "@/components/ContactQuoteSection";
+import { ChevronRightIcon, BoltIcon, EnvelopeIcon } from "@heroicons/react/24/solid";
 
 import Link from "next/link";
 import Logo from "@/components/Logo";
@@ -12,6 +13,12 @@ import Logo from "@/components/Logo";
 export const metadata = {
   title: "Home | Kemtech.be",
 };
+
+const ctaStyle =
+  "group cursor-pointer rounded-full border border-[#e97500ff] bg-[#e97500ff] text-black font-bold shadow-sm " +
+  "px-3 py-2 sm:px-4 sm:py-2.5 md:px-5 md:py-3 " +
+  "transform transition-all duration-300 ease-out hover:scale-105 hover:bg-black hover:text-[#e97500ff] hover:border-black " +
+  "inline-flex items-center gap-2";
 
 export default function Home() {
   return (
@@ -30,73 +37,28 @@ export default function Home() {
         />
       </Head>
 
-      <NavBar />
+      <NavBar bgClass="bg-neutral-100" textClass="text-black" />
 
       {/* Hero */}
-      <header className="pt-32 pb-16 bg-gray-900 text-white">
+      <header className="pt-28 pb-8 bg-black text-white">
         <div className="container mx-auto px-4 text-center">
-          {/* <h1 className="text-3xl md:text-5xl font-extrabold">
-            Elektriciteit • Airco • Ventilatie • Laadpalen
-          </h1> */}
           <h1 className="text-3xl md:text-5xl font-extrabold">
-            A
+            Elektriciteit • Airco • Ventilatie • Laadpalen
           </h1>
           <p className="mt-4 text-lg opacity-90">
             Professionele installatie en service – overal in België.
           </p>
           <div className="mt-6 flex justify-center gap-3">
-            <a href="#quote" className="px-5 py-3 rounded-lg bg-white text-gray-900 font-semibold hover:opacity-90">
-              Vraag een offerte
-            </a>
-            <a href="#contact" className="px-5 py-3 rounded-lg border border-white font-semibold hover:bg-white/10">
-              Contact
+            <a href="#quote" className={ctaStyle} aria-label="Ga naar offerte">
+              <BoltIcon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-black transition-all duration-300 transform group-hover:text-[#e97500ff] group-hover:rotate-6 group-hover:scale-110" />
+              Offerte aanvragen
             </a>
           </div>
         </div>
       </header>
 
-      <div className="bg-gray-100 container mx-auto flex justify-between items-center">
-        <Link href="/" className="cursor-pointer">
-          <Logo
-            width={200}
-            className="hover:scale-105 transition-transform duration-300"
-            letters="#000000ff"
-            symbol="#ff8000ff"
-          />
-        </Link>
-      </div>
-      <div className="bg-white container mx-auto flex justify-between items-center">
-        <Link href="/" className="cursor-pointer">
-          <Logo
-            width={200}
-            className="hover:scale-105 transition-transform duration-300"
-            letters="#000000ff"
-            symbol="#ff8000ff"
-          />
-        </Link>
-      </div>
-      <div className="bg-orange-200 container mx-auto flex justify-between items-center">
-        <Link href="/" className="cursor-pointer">
-          <Logo
-            width={200}
-            className="hover:scale-105 transition-transform duration-300"
-            letters="#000000ff"
-            symbol="#ff8000ff"
-          />
-        </Link>
-      </div>
-      <div className="bg-neutral-100 container mx-auto flex justify-between items-center">
-        <Link href="/" className="cursor-pointer">
-          <Logo
-            width={200}
-            className="hover:scale-105 transition-transform duration-300"
-            letters="#000000ff"
-            symbol="#ff8000ff"
-          />
-        </Link>
-      </div>
       {/* Elektriciteitswerken */}
-      <section id="electricity" className="scroll-mt-24 pt-16 pb-12 bg-orange-200">
+      <section id="electricity" className="scroll-mt-24 pt-16 pb-12 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold mb-3">Elektriciteitswerken (algemeen)</h2>
           <p className="text-gray-700 mb-4">
@@ -108,14 +70,14 @@ export default function Home() {
             <li>Schema’s (ééndraads & situatieschema) en keuring klaar maken</li>
             <li>Automatisatie/domotica (optioneel), storingen opsporen</li>
           </ul>
-          <a href="#quote" className="inline-block px-4 py-2 rounded-md bg-gray-900 text-white hover:opacity-90">
+          {/* <a href="#quote" className="inline-block px-4 py-2 rounded-md bg-gray-900 text-white hover:opacity-90">
             Offerte voor elektriciteitswerken
-          </a>
+          </a> */}
         </div>
       </section>
 
       {/* Airco (lucht-lucht) */}
-      <section id="airco" className="scroll-mt-24 py-12 bg-gray-50">
+      <section id="airco" className="scroll-mt-24 py-12 bg-gray-100">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold mb-3">Airco (lucht-lucht)</h2>
           <p className="text-gray-700 mb-4">
@@ -127,9 +89,9 @@ export default function Home() {
             <li>Installatie, vacuümtest en inbedrijfstelling</li>
             <li>Onderhoud & reiniging voor langdurige prestaties</li>
           </ul>
-          <a href="#quote" className="inline-block px-4 py-2 rounded-md bg-gray-900 text-white hover:opacity-90">
+          {/* <a href="#quote" className="inline-block px-4 py-2 rounded-md bg-gray-900 text-white hover:opacity-90">
             Offerte voor airco
-          </a>
+          </a> */}
         </div>
       </section>
 
@@ -146,14 +108,14 @@ export default function Home() {
             <li>Metingen, inregeling en filters</li>
             <li>Onderhoud en storingsdienst</li>
           </ul>
-          <a href="#quote" className="inline-block px-4 py-2 rounded-md bg-gray-900 text-white hover:opacity-90">
+          {/* <a href="#quote" className="inline-block px-4 py-2 rounded-md bg-gray-900 text-white hover:opacity-90">
             Offerte voor ventilatie
-          </a>
+          </a> */}
         </div>
       </section>
 
       {/* Laadpalen */}
-      <section id="charging-stations" className="scroll-mt-24 py-12 bg-gray-50">
+      <section id="charging-stations" className="scroll-mt-24 py-12 bg-gray-100">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold mb-3">Laadpalen</h2>
           <p className="text-gray-700 mb-4">
@@ -164,14 +126,14 @@ export default function Home() {
             <li>Installatie wallbox/paal, configuratie en app-koppeling</li>
             <li>Keuring en documentatie inbegrepen</li>
           </ul>
-          <a href="#quote" className="inline-block px-4 py-2 rounded-md bg-gray-900 text-white hover:opacity-90">
+          {/* <a href="#quote" className="inline-block px-4 py-2 rounded-md bg-gray-900 text-white hover:opacity-90">
             Offerte voor laadpalen
-          </a>
+          </a> */}
         </div>
       </section>
 
       {/* Regio / service area (kort in tekst) */}
-      <section className="py-10 bg-gray-900 text-white">
+      <section className="py-10 bg-black text-white">
         <div className="container mx-auto px-4 text-center">
           <p className="text-lg">
             Actief <strong>overal in België</strong> – snelle planning en duidelijke communicatie.
@@ -180,34 +142,9 @@ export default function Home() {
       </section>
 
       {/* Contact */}
-      <section id="contact" className="scroll-mt-24 py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-6">Contact</h2>
-          <p className="text-center text-gray-700 mb-8">
-            Vragen of advies? Laat je gegevens achter en we nemen snel contact op.
-          </p>
-          <ContactForm />
-          <div className="mt-6 flex justify-center">
-            <Socials />
-          </div>
-        </div>
+      <section>
+        <ContactQuoteSection />
       </section>
-
-      {/* Offerte */}
-      <section id="quote" className="scroll-mt-24 py-16 bg-gray-100">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-6">Offerte aanvragen</h2>
-          <p className="text-center text-gray-700 mb-8">
-            Beschrijf kort je project (type dienst, locatie, timing). We sturen je een heldere, vrijblijvende offerte.
-          </p>
-          <div className="flex justify-center">
-            <a href="#contact" className="px-5 py-3 rounded-lg bg-gray-900 text-white font-semibold hover:opacity-90">
-              Start je aanvraag
-            </a>
-          </div>
-        </div>
-      </section>
-
       <section className="">
         <Footer />
       </section>

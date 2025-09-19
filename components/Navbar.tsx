@@ -6,7 +6,16 @@ import { ChevronRightIcon, BoltIcon, EnvelopeIcon } from "@heroicons/react/24/so
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Socials } from "@/components/Socials";
 
-export default function NavBar() {
+export default function NavBar({
+  bgClass = "bg-neutral-100",
+  textClass = "text-black",
+  menuBgClass,
+}: {
+  bgClass?: string;
+  textClass?: string;
+  /** If not provided, mobile menu will reuse bgClass */
+  menuBgClass?: string;
+}) {
   const navRef = useRef<HTMLElement>(null);
   const [navbarHeight, setNavbarHeight] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
@@ -61,9 +70,17 @@ export default function NavBar() {
   const handleScroll = (id: string) => {
     const el = document.getElementById(id);
     if (!el) return;
-    const y = el.getBoundingClientRect().top + window.scrollY - navbarHeight;
-    window.scrollTo({ top: y, behavior: "smooth" });
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
     setIsOpen(false);
+  };
+
+  // Handle CTA clicks - close menu and navigate
+  const handleCTAClick = (href: string) => {
+    setIsOpen(false);
+    // Small delay to let the menu close animation start
+    setTimeout(() => {
+      window.location.hash = href.replace('#', '');
+    }, 100);
   };
 
   // Desktop link style
@@ -74,13 +91,15 @@ export default function NavBar() {
 
   // CTA style (desktop + mobile)
   const ctaStyle =
-    "group cursor-pointer rounded-full border border-[#e97500ff] bg-[#e97500ff] text-white font-bold shadow-sm " +
+    "group cursor-pointer rounded-full border border-[#e97500ff] bg-[#e97500ff] text-black font-bold shadow-sm " +
     "px-3 py-2 sm:px-4 sm:py-2.5 md:px-5 md:py-3 " +
     "transform transition-all duration-300 ease-out hover:scale-105 hover:bg-black hover:text-[#e97500ff] hover:border-black " +
     "inline-flex items-center gap-2";
 
+  const mobileMenuBg = menuBgClass ?? bgClass;
+
   return (
-    <nav ref={navRef} className="bg-neutral-100 p-2 sm:p-3 fixed w-full top-0 z-50">
+    <nav ref={navRef} className={`${bgClass} ${textClass} p-2 sm:p-3 fixed w-full top-0 z-50`}>
       <div className="container mx-auto flex items-center justify-between relative">
         {/* LEFT SECTION → LOGO + DIENSTEN */}
         <div className="flex items-center space-x-12 mx-auto">
@@ -89,7 +108,7 @@ export default function NavBar() {
             <Logo
               width={140}
               className="hover:scale-105 transition-transform duration-300 sm:w-[170px] md:w-[190px]"
-              letters="#000000ff"
+              letters={textClass.includes("text-white") ? "#ffffffff" : "#000000ff"}
               symbol="#ff8000ff"
             />
           </Link>
@@ -114,12 +133,12 @@ export default function NavBar() {
             </a>
 
             {/* CTA KNOPPEN */}
-            <a onClick={() => handleScroll("contact")} className={ctaStyle}>
-              <EnvelopeIcon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white transition-all duration-300 transform group-hover:text-[#e97500ff] group-hover:-rotate-6 group-hover:scale-110" />
+            <a href="#contact" className={ctaStyle}>
+              <EnvelopeIcon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-black transition-all duration-300 transform group-hover:text-[#e97500ff] group-hover:-rotate-6 group-hover:scale-110" />
               Contact
             </a>
-            <a onClick={() => handleScroll("quote")} className={ctaStyle}>
-              <BoltIcon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white transition-all duration-300 transform group-hover:text-[#e97500ff] group-hover:rotate-6 group-hover:scale-110" />
+            <a href="#quote" className={ctaStyle}>
+              <BoltIcon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-black transition-all duration-300 transform group-hover:text-[#e97500ff] group-hover:rotate-6 group-hover:scale-110" />
               Offerte aanvragen
             </a>
           </div>
@@ -132,8 +151,8 @@ export default function NavBar() {
 
         {/* HAMBURGER / CLOSE (below 2xl) */}
         <button
-          onClick={() => setIsOpen(v => !v)}
-          className="2xl:hidden absolute right-4 top-1/2 -translate-y-1/2 text-black p-1 rounded-full z-50"
+          onClick={() => setIsOpen((v) => !v)}
+          className={`2xl:hidden absolute right-4 top-1/2 -translate-y-1/2 ${textClass} p-1 rounded-full z-50`}
           aria-label={isOpen ? "Menu sluiten" : "Menu openen"}
           aria-controls="mobile-nav"
           aria-expanded={isOpen}
@@ -149,15 +168,18 @@ export default function NavBar() {
         {renderMenu && (
           <div
             id="mobile-nav"
-            className={`select-none 2xl:hidden fixed inset-x-0 bottom-0 z-40 bg-neutral-100 text-black
+            className={`select-none 2xl:hidden fixed inset-x-0 bottom-0 z-40 ${mobileMenuBg} ${textClass}
                         flex flex-col items-center p-8 space-y-8 overflow-auto
                         mobile-menu-anim ${isOpen ? "animate-in" : "animate-out"}`}
             style={{ top: navbarHeight || 72 }}
           >
             {/* CTA top (Offerte) */}
             <div className="flex flex-col items-center space-y-4">
-              <button onClick={() => handleScroll("quote")} className={ctaStyle + " justify-center"}>
-                <BoltIcon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white transition-all duration-300 transform group-hover:text-[#e97500ff] group-hover:rotate-6 group-hover:scale-110" />
+              <button
+                onClick={() => handleCTAClick("#quote")}
+                className={ctaStyle + " justify-center"}
+              >
+                <BoltIcon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-black transition-all duration-300 transform group-hover:text-[#e97500ff] group-hover:rotate-6 group-hover:scale-110" />
                 Offerte aanvragen
               </button>
             </div>
@@ -184,8 +206,11 @@ export default function NavBar() {
 
             {/* CTA bottom (Contact) */}
             <div className="flex flex-col items-center space-y-4">
-              <button onClick={() => handleScroll("contact")} className={ctaStyle + " justify-center"}>
-                <EnvelopeIcon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white transition-all duration-300 transform group-hover:text-[#e97500ff] group-hover:-rotate-6 group-hover:scale-110" />
+              <button
+                onClick={() => handleCTAClick("#contact")}
+                className={ctaStyle + " justify-center"}
+              >
+                <EnvelopeIcon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-black transition-all duration-300 transform group-hover:text-[#e97500ff] group-hover:-rotate-6 group-hover:scale-110" />
                 Contact
               </button>
             </div>
