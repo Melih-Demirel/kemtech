@@ -3,49 +3,31 @@ import { FaInstagram, FaGithub, FaLinkedin } from "react-icons/fa";
 
 const socialLinks = {
   instagram: "https://www.instagram.com/kemtech.be",
+  github: "https://github.com/kemtech",     // ← voeg deze toe
+  linkedin: "https://www.linkedin.com/company/kemtech-be", // ← voeg deze toe
 };
 
-const baseDiv = "border-2 border-gray-500 rounded-lg sm:border-black active:bg-gray-700 hover:sm:border-gray-500"
-
 export const Socials = () => {
+  const baseDiv =
+    "transition-transform duration-300 hover:scale-110 hover:text-[#ff8000ff]"; // subtiele zoom-in
+
+  const iconBase =
+    "text-2xl transition-colors duration-300"; // oranje hoverkleur
+
   return (
-    <div className="w-11/12 md:w-3/4 flex items-center mx-auto justify-center space-x-5">
-      <div
-        className={baseDiv}
-      >
+    <div className="flex items-center justify-center space-x-4">
+      {/* Instagram */}
+      <div className={baseDiv}>
         <a
           href={socialLinks.instagram}
           target="_blank"
           rel="noopener noreferrer"
-          className="block p-2"
+          aria-label="Instagram"
+          className="block p-1"
         >
-          <FaInstagram className="text-3xl" />
+          <FaInstagram className={iconBase} />
         </a>
       </div>
-      {/* <div
-        className={baseDiv}
-      >
-        <a
-          href={socialLinks.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block p-2"
-        >
-          <FaGithub className="text-3xl" />
-        </a>
-      </div>
-      <div
-        className={baseDiv}
-      >
-        <a
-          href={socialLinks.linkedin}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block p-2"
-        >
-          <FaLinkedin className="text-3xl" />
-        </a>
-      </div> */}
     </div>
   );
 };

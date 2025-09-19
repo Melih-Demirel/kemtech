@@ -21,6 +21,9 @@ body {
   }
 }
 
+:root {
+  --symbol: #ff850d;
+}
 
 /* Base logo coloring (defaults) */
 .kemtech-logo {

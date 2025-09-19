@@ -4,6 +4,11 @@ import { Socials } from "@/components/Socials";
 import { Footer } from "@/components/Footer";
 import { ContactForm } from "@/components/ContactForm";
 
+
+import Link from "next/link";
+import Logo from "@/components/Logo";
+
+
 export const metadata = {
   title: "Home | Kemtech.be",
 };
@@ -33,8 +38,8 @@ export default function Home() {
           {/* <h1 className="text-3xl md:text-5xl font-extrabold">
             Elektriciteit • Airco • Ventilatie • Laadpalen
           </h1> */}
-          <h1 className="text-3xl md:text-5xl font-extrabold italic">
-            DAHA DUZELTICEM
+          <h1 className="text-3xl md:text-5xl font-extrabold">
+            A
           </h1>
           <p className="mt-4 text-lg opacity-90">
             Professionele installatie en service – overal in België.
@@ -50,8 +55,48 @@ export default function Home() {
         </div>
       </header>
 
+      <div className="bg-gray-100 container mx-auto flex justify-between items-center">
+        <Link href="/" className="cursor-pointer">
+          <Logo
+            width={200}
+            className="hover:scale-105 transition-transform duration-300"
+            letters="#000000ff"
+            symbol="#ff8000ff"
+          />
+        </Link>
+      </div>
+      <div className="bg-white container mx-auto flex justify-between items-center">
+        <Link href="/" className="cursor-pointer">
+          <Logo
+            width={200}
+            className="hover:scale-105 transition-transform duration-300"
+            letters="#000000ff"
+            symbol="#ff8000ff"
+          />
+        </Link>
+      </div>
+      <div className="bg-orange-200 container mx-auto flex justify-between items-center">
+        <Link href="/" className="cursor-pointer">
+          <Logo
+            width={200}
+            className="hover:scale-105 transition-transform duration-300"
+            letters="#000000ff"
+            symbol="#ff8000ff"
+          />
+        </Link>
+      </div>
+      <div className="bg-neutral-100 container mx-auto flex justify-between items-center">
+        <Link href="/" className="cursor-pointer">
+          <Logo
+            width={200}
+            className="hover:scale-105 transition-transform duration-300"
+            letters="#000000ff"
+            symbol="#ff8000ff"
+          />
+        </Link>
+      </div>
       {/* Elektriciteitswerken */}
-      <section id="electricity" className="scroll-mt-24 pt-16 pb-12 bg-white">
+      <section id="electricity" className="scroll-mt-24 pt-16 pb-12 bg-orange-200">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold mb-3">Elektriciteitswerken (algemeen)</h2>
           <p className="text-gray-700 mb-4">
