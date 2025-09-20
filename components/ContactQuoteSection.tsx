@@ -4,19 +4,19 @@ import { ContactForm } from "@/components/FormContact";
 import { QuoteForm, SERVICES } from "@/components/FormQuote";
 
 export function ContactQuoteSection(): JSX.Element {
-  const [tab, setTab] = useState<"contact" | "quote">("quote");
+  const [tab, setTab] = useState<"contact" | "offerte">("offerte");
 
   useEffect(() => {
     const applyHash = () => {
       const h = window.location.hash.replace("#", "");
-      if (h === "contact" || h === "quote") setTab(h);
+      if (h === "contact" || h === "offerte") setTab(h);
     };
     applyHash();
     window.addEventListener("hashchange", applyHash);
     return () => window.removeEventListener("hashchange", applyHash);
   }, []);
 
-  const activate = (next: "contact" | "quote") => {
+  const activate = (next: "contact" | "offerte") => {
     setTab(next);
     if (typeof window !== "undefined") {
       window.history.replaceState(null, "", `#${next}`);
@@ -28,8 +28,8 @@ export function ContactQuoteSection(): JSX.Element {
   };
 
   return (
-    <section id="contact-quote" className="scroll-mt-18 py-16">
-      <span id="quote" className="block -mt-24 pt-24" aria-hidden />
+    <section id="contact-offerte" className="scroll-mt-18 py-16">
+      <span id="offerte" className="block -mt-24 pt-24" aria-hidden />
       <span id="contact" className="block -mt-24 pt-24" aria-hidden />
 
       <div className="container mx-auto px-4 max-w-5xl">
@@ -43,10 +43,10 @@ export function ContactQuoteSection(): JSX.Element {
           >
             <button
               role="tab"
-              aria-selected={tab === "quote"}
-              onClick={() => activate("quote")}
+              aria-selected={tab === "offerte"}
+              onClick={() => activate("offerte")}
               className={`px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#e97500ff] focus:ring-offset-0 focus:z-10 relative
-                ${tab === "quote"
+                ${tab === "offerte"
                   ? "bg-[#e97500ff] text-black"
                   : "bg-white text-gray-900 hover:bg-gray-50 active:bg-gray-100"}`}
             >

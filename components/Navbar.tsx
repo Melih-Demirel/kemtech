@@ -31,6 +31,31 @@ export default function NavBar({
     return () => window.removeEventListener("resize", updateNavbarHeight);
   }, [updateNavbarHeight]);
 
+  // Handle hash changes on page load and navigation
+  useEffect(() => {
+    const handleHashNavigation = () => {
+      const hash = window.location.hash.replace("#", "");
+      if (hash && !["contact", "offerte"].includes(hash)) {
+        // For service sections, scroll to them
+        const el = document.getElementById(hash);
+        if (el) {
+          setTimeout(() => {
+            const navH = navRef.current?.offsetHeight ?? 0;
+            const y = el.getBoundingClientRect().top + window.scrollY - navH;
+            window.scrollTo({ top: y, behavior: "smooth" });
+          }, 100);
+        }
+      }
+    };
+
+    // Handle initial hash on page load
+    handleHashNavigation();
+
+    // Listen for hash changes
+    window.addEventListener("hashchange", handleHashNavigation);
+    return () => window.removeEventListener("hashchange", handleHashNavigation);
+  }, []);
+
   // Mount/unmount with exit animation delay
   useEffect(() => {
     if (isOpen) {
@@ -60,18 +85,35 @@ export default function NavBar({
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Close on hash change (if you navigate via anchors elsewhere)
+  // Close menu on any hash change
   useEffect(() => {
     const onHash = () => setIsOpen(false);
     window.addEventListener("hashchange", onHash);
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
 
-  const handleScroll = (id: string) => {
+  // Scroll to section with proper offset
+  const scrollToId = (id: string) => {
     const el = document.getElementById(id);
     if (!el) return;
-    el.scrollIntoView({ behavior: "smooth", block: "start" });
-    setIsOpen(false);
+
+    const navH = navRef.current?.offsetHeight ?? 0;
+    const y = el.getBoundingClientRect().top + window.scrollY - navH;
+    window.scrollTo({ top: y, behavior: "smooth" });
+  };
+
+  // Handle service section navigation
+  const handleServiceClick = (id: string) => {
+    // Update URL hash
+    window.location.hash = id;
+
+    // Close mobile menu if open
+    if (isOpen) {
+      setIsOpen(false);
+      setTimeout(() => scrollToId(id), 260);
+    } else {
+      scrollToId(id);
+    }
   };
 
   // Handle CTA clicks - close menu and navigate
@@ -115,29 +157,29 @@ export default function NavBar({
 
           {/* DESKTOP LINKS (only at ≥2xl) */}
           <div className="hidden 2xl:flex space-x-5 xl:space-x-6 items-center">
-            <a onClick={() => handleScroll("electricity")} className={`group ${linkStyle}`}>
+            <a onClick={() => handleServiceClick("elektriciteitswerken")} className={`group ${linkStyle}`}>
               Elektriciteitswerken
               <ChevronRightIcon className="w-4 h-4 md:w-5 md:h-5 transition-transform duration-200 group-hover:translate-x-1" />
             </a>
-            <a onClick={() => handleScroll("airco")} className={`group ${linkStyle}`}>
+            <a onClick={() => handleServiceClick("airco")} className={`group ${linkStyle}`}>
               Airco
               <ChevronRightIcon className="w-4 h-4 md:w-5 md:h-5 transition-transform duration-200 group-hover:translate-x-1" />
             </a>
-            <a onClick={() => handleScroll("ventilation")} className={`group ${linkStyle}`}>
+            <a onClick={() => handleServiceClick("ventilatie")} className={`group ${linkStyle}`}>
               Ventilatie
               <ChevronRightIcon className="w-4 h-4 md:w-5 md:h-5 transition-transform duration-200 group-hover:translate-x-1" />
             </a>
-            <a onClick={() => handleScroll("charging-stations")} className={`group ${linkStyle}`}>
+            <a onClick={() => handleServiceClick("laadpalen")} className={`group ${linkStyle}`}>
               Laadpalen
               <ChevronRightIcon className="w-4 h-4 md:w-5 md:h-5 transition-transform duration-200 group-hover:translate-x-1" />
             </a>
 
             {/* CTA KNOPPEN */}
-            <a href="#contact" className={ctaStyle}>
+            <a onClick={(e) => { e.preventDefault(); handleCTAClick("contact"); }} className={ctaStyle}>
               <EnvelopeIcon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-black transition-all duration-300 transform group-hover:text-[#e97500ff] group-hover:-rotate-6 group-hover:scale-110" />
               Contact
             </a>
-            <a href="#quote" className={ctaStyle}>
+            <a onClick={(e) => { e.preventDefault(); handleCTAClick("offerte"); }} className={ctaStyle}>
               <BoltIcon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-black transition-all duration-300 transform group-hover:text-[#e97500ff] group-hover:rotate-6 group-hover:scale-110" />
               Offerte aanvragen
             </a>
@@ -176,7 +218,7 @@ export default function NavBar({
             {/* CTA top (Offerte) */}
             <div className="flex flex-col items-center space-y-4">
               <button
-                onClick={() => handleCTAClick("#quote")}
+                onClick={() => handleCTAClick("#offerte")}
                 className={ctaStyle + " justify-center"}
               >
                 <BoltIcon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-black transition-all duration-300 transform group-hover:text-[#e97500ff] group-hover:rotate-6 group-hover:scale-110" />
@@ -187,14 +229,14 @@ export default function NavBar({
             {/* Diensten */}
             <div className="flex flex-col items-center space-y-4">
               {[
-                { id: "electricity", label: "Elektriciteitswerken" },
+                { id: "elektriciteitswerken", label: "Elektriciteitswerken" },
                 { id: "airco", label: "Airco" },
-                { id: "ventilation", label: "Ventilatie" },
-                { id: "charging-stations", label: "Laadpalen" },
+                { id: "ventilatie", label: "Ventilatie" },
+                { id: "laadpalen", label: "Laadpalen" },
               ].map((item) => (
                 <a
                   key={item.id}
-                  onClick={() => handleScroll(item.id)}
+                  onClick={() => handleServiceClick(item.id)}
                   className="group cursor-pointer inline-flex items-center gap-1 font-bold text-lg
                              transition-colors duration-200 hover:text-[#ff8000ff]"
                 >

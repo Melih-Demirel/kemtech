@@ -49,7 +49,7 @@ export default function Home() {
             Professionele installatie en service – overal in België.
           </p>
           <div className="mt-6 flex justify-center gap-3">
-            <a href="#quote" className={ctaStyle} aria-label="Ga naar offerte">
+            <a href="#offerte" className={ctaStyle} aria-label="Ga naar offerte">
               <BoltIcon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-black transition-all duration-300 transform group-hover:text-[#e97500ff] group-hover:rotate-6 group-hover:scale-110" />
               Offerte aanvragen
             </a>
@@ -58,7 +58,7 @@ export default function Home() {
       </header>
 
       {/* Elektriciteitswerken */}
-      <section id="electricity" className="scroll-mt-24 pt-16 pb-12 bg-white">
+      <section id="elektriciteitswerken" className="scroll-mt-24 pt-16 pb-12 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold mb-3">Elektriciteitswerken (algemeen)</h2>
           <p className="text-gray-700 mb-4">
@@ -96,7 +96,7 @@ export default function Home() {
       </section>
 
       {/* Ventilatie */}
-      <section id="ventilation" className="scroll-mt-24 py-12 bg-white">
+      <section id="ventilatie" className="scroll-mt-24 py-12 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold mb-3">Ventilatie</h2>
           <p className="text-gray-700 mb-4">
@@ -115,7 +115,7 @@ export default function Home() {
       </section>
 
       {/* Laadpalen */}
-      <section id="charging-stations" className="scroll-mt-24 py-12 bg-gray-100">
+      <section id="laadpalen" className="scroll-mt-24 py-12 bg-gray-100">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold mb-3">Laadpalen</h2>
           <p className="text-gray-700 mb-4">
