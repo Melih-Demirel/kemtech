@@ -175,7 +175,7 @@ export const ContactForm: React.FC = () => {
             {buttonText}
           </button>
         </div>
-        <p className="pt-32 text-xs text-gray-500 text-center">
+        <p className="pt-2 text-xs text-gray-500 text-center">
           Vragen over privacy? Mail ons via{" "}
           <a href="mailto:info@kemtech.be" className="text-[#ff8000] hover:text-black">
             info@kemtech.be
