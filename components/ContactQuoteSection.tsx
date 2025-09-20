@@ -66,7 +66,7 @@ export function ContactQuoteSection(): JSX.Element {
           </div>
         </div>
 
-        <div className="mt-10 md:mt-12">
+        <div className="mt-10">
           {tab === "contact" ? <ContactForm /> : <QuoteForm services={SERVICES} />}
         </div>
       </div>
