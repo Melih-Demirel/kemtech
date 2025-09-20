@@ -175,13 +175,13 @@ export default function NavBar({
             </a>
 
             {/* CTA KNOPPEN */}
-            <a onClick={(e) => { e.preventDefault(); handleCTAClick("contact"); }} className={ctaStyle}>
-              <EnvelopeIcon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-black transition-all duration-300 transform group-hover:text-[#e97500ff] group-hover:-rotate-6 group-hover:scale-110" />
-              Contact
-            </a>
             <a onClick={(e) => { e.preventDefault(); handleCTAClick("offerte"); }} className={ctaStyle}>
               <BoltIcon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-black transition-all duration-300 transform group-hover:text-[#e97500ff] group-hover:rotate-6 group-hover:scale-110" />
               Offerte aanvragen
+            </a>
+            <a onClick={(e) => { e.preventDefault(); handleCTAClick("contact"); }} className={ctaStyle}>
+              <EnvelopeIcon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-black transition-all duration-300 transform group-hover:text-[#e97500ff] group-hover:-rotate-6 group-hover:scale-110" />
+              Contact
             </a>
           </div>
         </div>
