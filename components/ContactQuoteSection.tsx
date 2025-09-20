@@ -28,10 +28,7 @@ export function ContactQuoteSection(): JSX.Element {
   };
 
   return (
-    <section id="contact-offerte" className="scroll-mt-12 py-16">
-      <span id="offerte" className="block -mt-32 pt-32" aria-hidden />
-      <span id="contact" className="block -mt-32 pt-32" aria-hidden />
-
+    <section id="contact-offerte" className="pt-6 pb-24">
       <div className="container mx-auto px-4 max-w-5xl">
         <h2 className="sr-only">Contact & Offerte</h2>
 

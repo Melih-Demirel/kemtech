@@ -43,8 +43,20 @@ export default function NavBar({
             const navH = navRef.current?.offsetHeight ?? 0;
             const y = el.getBoundingClientRect().top + window.scrollY - navH;
             window.scrollTo({ top: y, behavior: "smooth" });
-          }, 100);
+          }, 150);
         }
+      } else if (["contact", "offerte"].includes(hash)) {
+        // For contact/offerte, scroll to the contact-offerte section
+        setTimeout(() => {
+          const el = document.getElementById("contact-offerte");
+          if (el) {
+            // Force a layout recalculation
+            el.offsetHeight;
+            const navH = navRef.current?.offsetHeight ?? 0;
+            const y = el.getBoundingClientRect().top + window.scrollY - navH;
+            window.scrollTo({ top: y, behavior: "smooth" });
+          }
+        }, 200); // Increased timeout for mobile menu close animation
       }
     };
 
@@ -118,11 +130,15 @@ export default function NavBar({
 
   // Handle CTA clicks - close menu and navigate
   const handleCTAClick = (href: string) => {
+    const targetId = href.replace('#', '');
     setIsOpen(false);
-    // Small delay to let the menu close animation start
+
+    // Longer delay for mobile menu close, shorter for desktop
+    const delay = isOpen ? 300 : 150;
+
     setTimeout(() => {
-      window.location.hash = href.replace('#', '');
-    }, 100);
+      window.location.hash = targetId;
+    }, delay);
   };
 
   // Desktop link style
@@ -175,11 +191,11 @@ export default function NavBar({
             </a>
 
             {/* CTA KNOPPEN */}
-            <a onClick={(e) => { e.preventDefault(); handleCTAClick("offerte"); }} className={ctaStyle}>
+            <a onClick={(e) => { e.preventDefault(); handleCTAClick("#offerte"); }} className={ctaStyle}>
               <BoltIcon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-black transition-all duration-300 transform group-hover:text-[#e97500ff] group-hover:rotate-6 group-hover:scale-110" />
               Offerte aanvragen
             </a>
-            <a onClick={(e) => { e.preventDefault(); handleCTAClick("contact"); }} className={ctaStyle}>
+            <a onClick={(e) => { e.preventDefault(); handleCTAClick("#contact"); }} className={ctaStyle}>
               <EnvelopeIcon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 text-black transition-all duration-300 transform group-hover:text-[#e97500ff] group-hover:-rotate-6 group-hover:scale-110" />
               Contact
             </a>
