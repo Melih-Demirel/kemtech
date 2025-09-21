@@ -4,20 +4,18 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  icons: [
-    { rel: "icon", url: "/tab_logo_new.svg", type: "image/svg+xml" },
-  ],
+export const metadata = {
+  title: 'Kemtech.be',
+  appleMobileWebAppTitle: 'Kemtech.be',
 };
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <head>
+        <meta name="apple-mobile-web-app-title" content="Kemtech.be" />
+        {/* Add favicon <link> tags here if needed */}
+      </head>
+      <body>{children}</body>
     </html>
   );
 }
