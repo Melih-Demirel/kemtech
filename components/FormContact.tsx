@@ -5,6 +5,7 @@ import {
   ArrowPathIcon,
   CheckCircleIcon,
 } from "@heroicons/react/24/solid";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export const ContactForm: React.FC = () => {
   const [name, setName] = useState("");
@@ -14,6 +15,8 @@ export const ContactForm: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState<"idle" | "loading" | "sent">("idle");
   const [feedback, setFeedback] = useState<null | { type: "ok" | "err"; text: string }>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null); // ✅
+  const [honeypot, setHoneypot] = useState(""); // ✅
 
   // timer ref voor automatische reset na succes
   const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -26,7 +29,7 @@ export const ContactForm: React.FC = () => {
   const fieldStyle =
     "w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400";
 
-  const isFormValid = consent && name.trim() && email.trim() && message.trim();
+  const isFormValid = consent && name.trim() && email.trim() && message.trim() && captchaToken;
   const disabled = submitting || !isFormValid || status === "sent";
 
   const baseBtn = "w-full rounded-full py-3 font-semibold inline-flex items-center justify-center gap-2 transition";
@@ -46,6 +49,8 @@ export const ContactForm: React.FC = () => {
   const buttonText =
     status === "loading" ? "Versturen..." : status === "sent" ? "Verstuurd" : "Versturen";
 
+  const captchaRef = useRef<ReCAPTCHA | null>(null);
+
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFeedback(null);
@@ -55,6 +60,11 @@ export const ContactForm: React.FC = () => {
         type: "err",
         text: "Vul minstens naam, e-mail en bericht in en ga akkoord met het privacybeleid.",
       });
+      return;
+    }
+    // 🧠 Honeypot check (simple spam trap)
+    if (honeypot.trim() !== "") {
+      setFeedback({ type: "err", text: "Spam gedetecteerd." });
       return;
     }
 
@@ -67,6 +77,8 @@ export const ContactForm: React.FC = () => {
       fd.set("email", email);
       fd.set("message", message);
       fd.set("subject", "Contact via website");
+      fd.set("captcha", captchaToken || "");
+      fd.set("company", honeypot || "");
 
       const res = await fetch("/api/contact", { method: "POST", body: fd });
       const data = await res.json().catch(() => ({}));
@@ -83,6 +95,8 @@ export const ContactForm: React.FC = () => {
       setMessage("");
       setConsent(false);
 
+      captchaRef.current?.reset();
+      setCaptchaToken(null);
       // 🔁 na 5s: feedback weg + button terug naar normaal
       if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
       resetTimerRef.current = setTimeout(() => {
@@ -110,6 +124,16 @@ export const ContactForm: React.FC = () => {
         </p>
       </div>
 
+      {/* 🧠 Honeypot field */}
+      <input
+        type="text"
+        name="company"
+        value={honeypot}
+        onChange={(e) => setHoneypot(e.target.value)}
+        className="hidden"
+        tabIndex={-1}
+        autoComplete="off"
+      />
       <div className="grid grid-cols-1 gap-4">
         <div>
           <label className="block text-sm font-medium mb-1">Naam *</label>
@@ -162,7 +186,14 @@ export const ContactForm: React.FC = () => {
             van <i className="not-italic text-[#ff8000]">Kemtech</i>.
           </label>
         </div>
+        <div className="pt-2">
+          <ReCAPTCHA
+            ref={captchaRef}
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+            onChange={setCaptchaToken}
+          />
 
+        </div>
         {feedback && (
           <p className={`text-sm ${feedback.type === "ok" ? "text-green-600" : "text-red-600"}`}>
             {feedback.text}

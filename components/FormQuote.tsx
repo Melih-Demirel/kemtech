@@ -1,6 +1,7 @@
 "use client";
 import React, { useMemo, useRef, useEffect, useState } from "react";
 import { PaperAirplaneIcon, ArrowPathIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export type ServiceKey = "electricity" | "airco" | "ventilation" | "charging-stations";
 
@@ -28,6 +29,8 @@ export const QuoteForm: React.FC<{
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState<"idle" | "loading" | "sent">("idle");
   const [feedback, setFeedback] = useState<null | { type: "ok" | "err"; text: string }>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null); // ✅
+  const [honeypot, setHoneypot] = useState(""); // ✅
 
   // auto-reset timer
   const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -46,13 +49,16 @@ export const QuoteForm: React.FC<{
       !!city.trim() &&
       chosen.length > 0 &&
       !!message.trim() &&
-      consent,
-    [name, street, number, zip, city, chosen.length, message, consent]
+      consent &&
+      !!captchaToken,
+    [name, street, number, zip, city, chosen.length, message, consent, captchaToken]
   );
 
   const toggle = (key: ServiceKey) => {
     setChosen(prev => (prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key]));
   };
+
+  const captchaRef = useRef<ReCAPTCHA | null>(null);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -60,6 +66,11 @@ export const QuoteForm: React.FC<{
 
     if (!valid) {
       setFeedback({ type: "err", text: "Gelieve alle verplichte velden in te vullen en minstens één dienst te kiezen." });
+      return;
+    }
+    // 🧠 Honeypot check (simple spam trap)
+    if (honeypot.trim() !== "") {
+      setFeedback({ type: "err", text: "Spam gedetecteerd." });
       return;
     }
 
@@ -76,11 +87,14 @@ export const QuoteForm: React.FC<{
       fd.set("tel", tel);
       fd.set("street", street);
       fd.set("number", number);
+      fd.set("subject", "Offerte aanvraag via website");
       fd.set("bus", bus);
       fd.set("zip", zip);
       fd.set("city", city);
       serviceLabels.forEach(label => fd.append("services", label));
       fd.set("message", message);
+      fd.set("captcha", captchaToken || "");
+      fd.set("company", honeypot || "");
 
       const res = await fetch("/api/offerte", { method: "POST", body: fd });
 
@@ -104,6 +118,8 @@ export const QuoteForm: React.FC<{
       setChosen([]);
       setMessage("");
       setConsent(false);
+      captchaRef.current?.reset();
+      setCaptchaToken(null);
 
       // na 5s: feedback verbergen + knop terug naar normaal
       if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
@@ -149,7 +165,16 @@ export const QuoteForm: React.FC<{
           <span className="text-slate-700">We sturen je een heldere, vrijblijvende offerte.</span>
         </p>
       </div>
-
+      {/* 🧠 Honeypot field */}
+      <input
+        type="text"
+        name="company"
+        value={honeypot}
+        onChange={(e) => setHoneypot(e.target.value)}
+        className="hidden"
+        tabIndex={-1}
+        autoComplete="off"
+      />
       <div className="grid grid-cols-1 gap-4">
         <div>
           <label className="block text-sm font-medium mb-1">Naam *</label>
@@ -227,6 +252,14 @@ export const QuoteForm: React.FC<{
             </a>{" "}
             van <i className="not-italic text-[#ff8000]">Kemtech</i>.
           </label>
+        </div>
+
+        <div className="pt-2">
+          <ReCAPTCHA
+            ref={captchaRef}
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+            onChange={setCaptchaToken}
+          />
         </div>
 
         {feedback && <p className={`text-sm ${feedback.type === "ok" ? "text-green-600" : "text-red-600"}`}>{feedback.text}</p>}

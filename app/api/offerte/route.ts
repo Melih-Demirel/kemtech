@@ -1,6 +1,8 @@
 // app/api/offerte/route.ts
 import nodemailer from "nodemailer";
 
+const ipTracker: Record<string, number> = {};
+
 type OffertePayload = {
   name?: string;
   email?: string;     // optioneel (replyTo als aanwezig)
@@ -13,6 +15,8 @@ type OffertePayload = {
   services?: string[]; // labels (bv. "Elektriciteitswerken")
   message?: string;
   subject?: string;    // optioneel
+  captcha?: string;
+  company?: string; // honeypot field
 };
 
 function s(v: unknown): string {
@@ -53,7 +57,8 @@ export async function POST(req: Request) {
         city: s(form.get("city")),
         message: s(form.get("message")),
         subject: s(form.get("subject")),
-        // ondersteunt zowel meerdere "services" velden als CSV string
+        captcha: s(form.get("captcha")),
+        company: s(form.get("company")),
         services:
           form.getAll("services").length > 0
             ? form.getAll("services").map(s)
@@ -75,6 +80,78 @@ export async function POST(req: Request) {
   const message = s(data.message);
   const services = (data.services ?? []).map(s).filter(Boolean);
   const subject = s(data.subject) || "Nieuwe offerte-aanvraag";
+
+
+  const captcha = s(data.captcha);
+  const honeypot = s(data.company);
+
+  // 🔒 1. Origin check (only allow your domain)
+  const origin = req.headers.get("origin") || "";
+  const allowedDomains = ["localhost", "kemtech.be"];
+
+  // Check if the origin includes any of the allowed domains
+  if (!allowedDomains.some(domain => origin.includes(domain))) {
+    return new Response(
+      JSON.stringify({ ok: false, error: "Invalid origin" }),
+      { status: 403 }
+    );
+  }
+
+
+  // 🔒 2. Rate limit (1 request per 30s per IP)
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    req.headers.get("cf-connecting-ip") ||
+    "unknown";
+
+  const now = Date.now();
+  const last = ipTracker[ip] || 0;
+  const cooldown = 60_000; // 60 seconds
+
+  if (now - last < cooldown) {
+    const secondsLeft = Math.ceil((cooldown - (now - last)) / 1000);
+    return new Response(
+      JSON.stringify({ ok: false, error: `Please wait ${secondsLeft} second${secondsLeft > 1 ? 's and try sending again.' : ''}` }),
+      { status: 429 }
+    );
+  }
+
+  // Update the tracker
+  ipTracker[ip] = now;
+
+  // 🧠 Honeypot check
+  if (honeypot) {
+    return new Response(JSON.stringify({ ok: false, error: "Spam detected" }), { status: 400 });
+  }
+
+  try {
+    if (!captcha) {
+      return new Response(JSON.stringify({ ok: false, error: "Captcha missing" }), { status: 400 });
+    }
+
+    const verify = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        secret: process.env.RECAPTCHA_SECRET_KEY!,
+        response: captcha,
+      }),
+    });
+
+    const result = await verify.json();
+
+    if (!result.success) {
+      console.warn("Captcha failed:", result);
+      return new Response(JSON.stringify({ ok: false, error: "Captcha verification failed" }), {
+        status: 400,
+      });
+    }
+  } catch (err) {
+    console.error("Captcha error:", err);
+    return new Response(JSON.stringify({ ok: false, error: "Captcha request failed" }), {
+      status: 400,
+    });
+  }
 
   // Validatie (sluit aan op je frontend)
   if (!name || !street || !number || !zip || !city || !message || services.length === 0) {
@@ -128,7 +205,6 @@ export async function POST(req: Request) {
       text: textBody,
       html: htmlBody,
     });
-
     return new Response(JSON.stringify({ ok: true }), { status: 200 });
   } catch (err: any) {
     console.error("SMTP error:", err);
